@@ -115,7 +115,7 @@ Add a class of `flex-ctr` to `mainEl`.
 
 ### Progress Check:
 
-<img src="[https://i.imgur.com/6y10M6X.png](https://i.imgur.com/6y10M6X.png)">
+![https://i.imgur.com/6y10M6X.png](https://i.imgur.com/6y10M6X.png)
 
 ### Task 2.0
 
