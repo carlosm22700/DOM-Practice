@@ -1,11 +1,20 @@
-// Menu data structure
 const menuLinks = [
     {text: 'about', href: '/about'},
-    {text: 'catalog', href: '/catalog'},
-    {text: 'orders', href: '/orders'},
-    {text: 'account', href: '/account'},
-  ];
-
+    {text: 'catalog', href: '#', subLinks: [
+        {text: 'all', href: '/catalog/all'},
+        {text: 'top selling', href: '/catalog/top'},
+        {text: 'search', href: '/catalog/search'},
+    ]},
+    {text: 'orders', href: '#' , subLinks: [
+        {text: 'new', href: '/orders/new'},
+        {text: 'pending', href: '/orders/pending'},
+        {text: 'history', href: '/orders/history'},
+    ]},
+    {text: 'account', href: '#', subLinks: [
+        {text: 'profile', href: '/account/profile'},
+        {text: 'sign out', href: '/account/signout'},
+    ]},
+];
 //task 1.0
 
 const mainEl = document.querySelector('main');
@@ -35,7 +44,7 @@ topMenuEl.style.height = '100%';
 
 topMenuEl.style.backgroundColor = 'var(--top-menu-bg)';
 
-//tasl 2.3
+//task 2.3
 topMenuEl.classList.add ('flex-around');
 
 menuLinks.forEach(function(link) {
@@ -46,10 +55,10 @@ menuLinks.forEach(function(link) {
     // Set link text
     newLinkEl.textContent = link.text;
     // Append new link element to topMenuEl
-    topMenuEl.append(newLinkEl);
-  });
+    topMenuEl.appendChild(newLinkEl);
+});
 
-//tasl 3.0
+//task 3.1
 
 menuLinks.forEach(function(link) {
     //creates an <a> element
@@ -59,3 +68,115 @@ menuLinks.forEach(function(link) {
     //set link text
     newLinkEl.textContent
 });
+
+//////////////////////////////////  part 2  /////////////////////////////////////
+
+//task 4.0
+const subMenuEl = document.getElementById('sub-menu');
+
+//task 4.1
+subMenuEl.style.height = '100%';
+
+//task 4.2
+subMenuEl.style.backgroundColor = 'var(--sub-menu-bg)';
+
+//task 4.3
+subMenuEl.classList.add('flex-around');
+
+//task 4.4
+subMenuEl.style.position = 'absolute';
+
+//task 4.5
+subMenuEl.style.top = '0';
+
+//task 5.1
+const topMenuLinks = document.querySelectorAll('#top-menu a');
+
+    //using var vs let here? since it is a global variable
+let showingSubMenu = false;
+
+//task 5.2
+
+topMenuEl.addEventListener('click', function(event){
+    event.preventDefault();
+    const link = event.target;
+    if (event.target.tagName !== 'A') {
+        return;
+    }
+    console.log(event.target.textContent)
+
+    //task 5.3
+    if (link.classList.contains('active')) {
+        link.classList.remove('active');
+        showingSubMenu = false;
+        subMenuEl.style.top = '0';
+        return;
+
+    }
+
+    //task 5.4
+    topMenuLinks.forEach(function(link){
+        link.classList.remove('active');
+    });
+    
+    //task 5.5
+    link.classList.add('active');
+
+    //task 5.6
+    const linkObjects = menuLinks.find(function(linkObj) {
+        return linkObj.text === link.textContent.toLowerCase(); //checks for case sensitivity
+    })
+
+    showingSubMenu = 'subLinks' in linkObjects;
+
+    //task 5.7
+    if (showingSubMenu) {
+        buildSubMenu(linkObjects.subLinks);
+        subMenuEl.style.top = '100%';
+    } else {
+        subMenuEl.style.top = '0';
+        mainEl.innerHTML = '<h1>about</h1>';
+    }
+});
+
+
+//task 5.8
+function buildSubMenu(subLinks) {
+    //clear the contents of subMenuEl
+    subMenuEl.innerHTML = '';
+    // Iterate over the sublinks array and create a new <a> element for each link
+    subLinks.forEach(function(link) {
+        const linkEl = document.createElement('a');
+        linkEl.setAttribute('href', link.href);
+        linkEl.textContent = link.text;
+        subMenuEl.appendChild(linkEl);
+    });
+}
+
+
+//task 6.0
+subMenuEl.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    const link = evt.target;
+    if (link.tagName !== 'A') return;
+    console.log(link.textContent);
+
+    //task 6.1
+    showingSubMenu = false;
+    subMenuEl.style.top = '0';
+
+    //task 6.2
+    topMenuLinks.forEach(function(link) {
+        link.classList.remove('active');
+    });
+
+    //task 6.3
+    mainEl.innerHTML = '<h1>' + link.textContent + '</h1';
+    
+
+})
+
+
+
+
+
